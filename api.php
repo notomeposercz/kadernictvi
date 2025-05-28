@@ -102,6 +102,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo json_encode(['success' => false, 'message' => 'Chyba při mazání položky']);
             }
             break;
+            
+            case 'update_order':
+    if (!isLoggedIn()) {
+        echo json_encode(['success' => false, 'message' => 'Nejste přihlášen']);
+        break;
+    }
+    
+    $items = $input['items'] ?? [];
+    
+    if (empty($items)) {
+        echo json_encode(['success' => false, 'message' => 'Žádná data']);
+        break;
+    }
+    
+    try {
+        $pdo->beginTransaction();
+        
+        foreach ($items as $item) {
+            $stmt = $pdo->prepare("UPDATE cenik SET display_order = ? WHERE id = ?");
+            $stmt->execute([$item['order'], $item['id']]);
+        }
+        
+        $pdo->commit();
+        echo json_encode(['success' => true, 'message' => 'Pořadí aktualizováno']);
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        echo json_encode(['success' => false, 'message' => 'Chyba při aktualizaci pořadí']);
+    }
+    break;
 
         default:
             echo json_encode(['success' => false, 'message' => 'Neplatná akce']);
