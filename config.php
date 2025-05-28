@@ -10,8 +10,9 @@ $pdo = null;
 try {
     $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8", DB_USER, DB_PASS, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_TIMEOUT => 5, // 5 sekund timeout
-        PDO::ATTR_PERSISTENT => false
+        PDO::ATTR_TIMEOUT => 10, // Zvýšil jsem z 5 na 10 sekund
+        PDO::ATTR_PERSISTENT => false,
+        PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true // PŘIDÁNO
     ]);
 } catch(PDOException $e) {
     // Loguj chybu místo die()
