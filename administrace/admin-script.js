@@ -284,6 +284,13 @@ function sortData(data, sortBy) {
     const sorted = [...data];
     
     switch (sortBy) {
+        case 'order':
+            // Řazení podle display_order (vlastní pořadí)
+            return sorted.sort((a, b) => {
+                const orderA = a.display_order !== null ? a.display_order : 999999;
+                const orderB = b.display_order !== null ? b.display_order : 999999;
+                return orderA - orderB;
+            });
         case 'name':
             return sorted.sort((a, b) => a.sluzba.localeCompare(b.sluzba));
         case 'name_desc':
@@ -293,10 +300,14 @@ function sortData(data, sortBy) {
         case 'price_desc':
             return sorted.sort((a, b) => extractPrice(b.cena) - extractPrice(a.cena));
         default:
-            return sorted.sort((a, b) => a.id - b.id);
+            // Výchozí řazení také podle display_order
+            return sorted.sort((a, b) => {
+                const orderA = a.display_order !== null ? a.display_order : 999999;
+                const orderB = b.display_order !== null ? b.display_order : 999999;
+                return orderA - orderB;
+            });
     }
 }
-
 // Extrakce čísla z ceny pro řazení
 function extractPrice(priceString) {
     const match = priceString.match(/\d+/);
@@ -419,14 +430,21 @@ async function updateItemOrder() {
         order: index
     }));
     
-    // Zde byste měli zavolat API pro uložení nového pořadí
-    // Pro jednoduchost nyní pouze aktualizujeme lokální data
-    newOrder.forEach(orderItem => {
-        const item = cenikData.find(i => i.id === orderItem.id);
-        if (item) {
-            item.order = orderItem.order;
-        }
-    });
+    // Volání API pro uložení nového pořadí na server
+    const result = await apiCall('update_order', { items: newOrder });
     
-    showToast('Pořadí bylo aktualizováno', 'success');
+    if (result.success) {
+        // Aktualizace lokálních dat pouze při úspěchu
+        newOrder.forEach(orderItem => {
+            const item = cenikData.find(i => i.id === orderItem.id);
+            if (item) {
+                item.display_order = orderItem.order;
+            }
+        });
+        showToast('Pořadí bylo aktualizováno', 'success');
+    } else {
+        showToast(result.message || 'Chyba při aktualizaci pořadí', 'error');
+        // Obnovit původní pořadí při chybě
+        loadCenik();
+    }
 }
