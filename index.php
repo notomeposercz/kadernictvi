@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- HTML zůstává stejný... -->
     <header class="main-header">
         <div class="header-overlay"></div>
         <img src="image1.jpg" alt="Kadeřnictví Tereza Dvořáčková" class="header-photo">
@@ -83,7 +84,32 @@
                     <div class="section-line"></div>
                 </div>
                 <div class="cenik-grid" id="cenikGrid">
-                    <!-- Ceník se načte z databáze -->
+                    <!-- Fallback statický ceník, pokud se nepodaří načíst z DB -->
+                    <div class="cenik-card">
+                        <div class="cenik-icon"><i class="fas fa-cut"></i></div>
+                        <h3>Dámský střih</h3>
+                        <div class="cenik-price">350 Kč</div>
+                    </div>
+                    <div class="cenik-card">
+                        <div class="cenik-icon"><i class="fas fa-cut"></i></div>
+                        <h3>Pánský střih</h3>
+                        <div class="cenik-price">250 Kč</div>
+                    </div>
+                    <div class="cenik-card">
+                        <div class="cenik-icon"><i class="fas fa-cut"></i></div>
+                        <h3>Dětský střih</h3>
+                        <div class="cenik-price">200 Kč</div>
+                    </div>
+                    <div class="cenik-card">
+                        <div class="cenik-icon"><i class="fas fa-cut"></i></div>
+                        <h3>Barvení</h3>
+                        <div class="cenik-price">od 600 Kč</div>
+                    </div>
+                    <div class="cenik-card">
+                        <div class="cenik-icon"><i class="fas fa-cut"></i></div>
+                        <h3>Melír</h3>
+                        <div class="cenik-price">od 700 Kč</div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -200,35 +226,65 @@
     </footer>
 
     <script>
-        // Načtení ceníku při načtení stránky
+        // Načtení ceníku při načtení stránky - pouze pokud je sekce viditelná
         document.addEventListener('DOMContentLoaded', function() {
-            loadCenik();
             initSmoothScrolling();
+            
+            // Použij Intersection Observer pro lazy loading ceníku
+            const cenikSection = document.getElementById('cenik');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        loadCenik();
+                        observer.unobserve(entry.target); // Načti jen jednou
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            observer.observe(cenikSection);
         });
 
-        // API volání
-        async function apiCall(action, data = {}) {
+        // API volání s timeout a retry logikou
+        async function apiCall(action, data = {}, timeout = 5000) {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), timeout);
+            
             try {
                 const response = await fetch('api.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ action, ...data })
+                    body: JSON.stringify({ action, ...data }),
+                    signal: controller.signal
                 });
+                
+                clearTimeout(timeoutId);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
                 return await response.json();
             } catch (error) {
+                clearTimeout(timeoutId);
                 console.error('API Error:', error);
+                
+                if (error.name === 'AbortError') {
+                    return { success: false, message: 'Timeout - požadavek trval příliš dlouho' };
+                }
+                
                 return { success: false, message: 'Chyba připojení' };
             }
         }
 
-        // Načtení ceníku z databáze
+        // Načtení ceníku z databáze s fallback
         async function loadCenik() {
             const result = await apiCall('get_cenik');
-            if (result.success) {
+            if (result.success && result.data && result.data.length > 0) {
                 updateCenikGrid(result.data);
             }
+            // Pokud se nepodaří načíst, zůstane statický HTML
         }
 
         // Aktualizace ceníku - nový grid design

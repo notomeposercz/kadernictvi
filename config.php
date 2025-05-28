@@ -2,18 +2,27 @@
 // Databázové připojení
 define('DB_HOST', 'db.dw189.webglobe.com');
 define('DB_NAME', 'kader_myrec_cz');
-define('DB_USER', 'kader_myrec_cz'); // změňte na své údaje
-define('DB_PASS', 'aeiVSlBEMNvtcF0'); // změňte na své údaje
+define('DB_USER', 'kader_myrec_cz');
+define('DB_PASS', 'aeiVSlBEMNvtcF0');
+
+$pdo = null;
 
 try {
-    $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8", DB_USER, DB_PASS);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8", DB_USER, DB_PASS, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_TIMEOUT => 5, // 5 sekund timeout
+        PDO::ATTR_PERSISTENT => false
+    ]);
 } catch(PDOException $e) {
-    die("Chyba připojení k databázi: " . $e->getMessage());
+    // Loguj chybu místo die()
+    error_log("Database connection error: " . $e->getMessage());
+    $pdo = null; // Nech aplikaci běžet bez DB
 }
 
 // Nastavení pro session
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Funkce pro kontrolu přihlášení
 function isLoggedIn() {
@@ -22,6 +31,12 @@ function isLoggedIn() {
 
 // Funkce pro kontrolu hesla
 function verifyPassword($password) {
-    return $password === 'kadernice2025'; // nebo použijte hash_verify() pro bezpečnější řešení
+    return $password === 'kadernice2025';
+}
+
+// Funkce pro kontrolu připojení k databázi
+function isDatabaseConnected() {
+    global $pdo;
+    return $pdo !== null;
 }
 ?>
