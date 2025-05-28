@@ -6,131 +6,204 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kadeřnictví Tereza Dvořáčková</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css?family=Inter:400,600,700,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <header class="main-header">
+        <div class="header-overlay"></div>
         <img src="image1.jpg" alt="Kadeřnictví Tereza Dvořáčková" class="header-photo">
         <div class="header-content">
+            <div class="header-logo">
+                <i class="fas fa-cut"></i>
+            </div>
             <h1>Kadeřnictví Tereza Dvořáčková</h1>
-            <p>Měnín 475</p>
-            <p>Tel.: <a href="tel:792350545">792 350 545</a></p>
-            <p>IČ: 04652240</p>
+            <div class="header-info">
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Měnín 475</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-phone"></i>
+                    <a href="tel:792350545">792 350 545</a>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-id-card"></i>
+                    <span>IČ: 04652240</span>
+                </div>
+            </div>
         </div>
     </header>
-    <nav>
-        <ul>
-            <li><a href="#cenik">Ceník</a></li>
-            <li><a href="#doba">Pracovní doba</a></li>
-            <li><a href="#objednani">Objednání</a></li>
-            <li><a href="#mapa">Kde nás najdete</a></li>
-            <li><a href="#admin-login">Administrace</a></li>
-        </ul>
+
+    <nav class="main-nav">
+        <div class="nav-container">
+            <ul>
+                <li><a href="#o-nas"><i class="fas fa-heart"></i> O nás</a></li>
+                <li><a href="#cenik"><i class="fas fa-tags"></i> Ceník</a></li>
+                <li><a href="#doba"><i class="fas fa-clock"></i> Pracovní doba</a></li>
+                <li><a href="#objednani"><i class="fas fa-calendar-plus"></i> Objednání</a></li>
+                <li><a href="#mapa"><i class="fas fa-map-marker-alt"></i> Kde nás najdete</a></li>
+            </ul>
+        </div>
     </nav>
-    <main>
-        <section id="o-nas" class="card">
-            <h2>O nás</h2>
-            <p>Moderní kadeřnické služby v příjemném prostředí. Sledujeme trendy, pečujeme o každého zákazníka individuálně. Přijďte se nechat hýčkat do našeho salonu v Měníně!</p>
-        </section>
 
-        <section id="cenik" class="card">
-            <h2>Ceník</h2>
-            <table id="cenikTable">
-                <tr><th>Služba</th><th>Cena</th></tr>
-                <!-- Ceník se načte z databáze -->
-            </table>
-        </section>
-
-        <section id="doba" class="card">
-            <h2>Pracovní doba</h2>
-            <table>
-                <tr><td>Pondělí</td><td>8:00 – 17:00</td></tr>
-                <tr><td>Úterý</td><td>8:00 – 17:00</td></tr>
-                <tr><td>Středa</td><td>8:00 – 17:00</td></tr>
-                <tr><td>Čtvrtek</td><td>8:00 – 17:00</td></tr>
-                <tr><td>Pátek</td><td>8:00 – 15:00</td></tr>
-                <tr><td>Sobota</td><td>Zavřeno</td></tr>
-                <tr><td>Neděle</td><td>Zavřeno</td></tr>
-            </table>
-        </section>
-
-        <section id="objednani" class="card">
-            <h2>Formulář pro objednání</h2>
-            <form>
-                <label for="name">Jméno:</label>
-                <input type="text" id="name" name="name" required>
-                <label for="email">E-mail:</label>
-                <input type="email" id="email" name="email" required>
-                <label for="phone">Telefon:</label>
-                <input type="tel" id="phone" name="phone">
-                <label for="msg">Požadovaný termín a služba:</label>
-                <textarea id="msg" name="msg" required></textarea>
-                <button type="submit">Odeslat objednávku</button>
-            </form>
-        </section>
-
-        <section id="mapa" class="card">
-            <h2>Kde nás najdete</h2>
-            <div class="mapouter">
-                <iframe src="https://www.google.com/maps?q=Měnín+475&amp;output=embed" width="100%" height="270" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    <main class="main-content">
+        <section id="o-nas" class="section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2><i class="fas fa-heart"></i> O nás</h2>
+                    <div class="section-line"></div>
+                </div>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>Moderní kadeřnické služby v příjemném prostředí. Sledujeme trendy, pečujeme o každého zákazníka individuálně. Přijďte se nechat hýčkat do našeho salonu v Měníně!</p>
+                        <div class="features">
+                            <div class="feature">
+                                <i class="fas fa-star"></i>
+                                <span>Moderní trendy</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-user-friends"></i>
+                                <span>Individuální přístup</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-spa"></i>
+                                <span>Příjemné prostředí</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- Přihlášení do administrace -->
-        <section id="admin-login" class="admin-panel" style="display:block;">
-            <h2>Přihlášení do administrace</h2>
-            <form id="loginForm">
-                <label for="adminPassword">Heslo:</label>
-                <input type="password" id="adminPassword" required>
-                <button type="submit">Přihlásit se</button>
-            </form>
-            <div id="loginError" style="color:#b34d1e; display:none; margin-top:1em;">Nesprávné heslo!</div>
+        <section id="cenik" class="section section-alt">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2><i class="fas fa-tags"></i> Ceník služeb</h2>
+                    <div class="section-line"></div>
+                </div>
+                <div class="cenik-grid" id="cenikGrid">
+                    <!-- Ceník se načte z databáze -->
+                </div>
+            </div>
         </section>
 
-        <!-- Administrace ceníku -->
-        <section id="admin" class="admin-panel" style="display:none;">
-            <h2>Administrace ceníku</h2>
-            <form id="cenikForm">
-                <input type="hidden" id="editId" value="">
-                <label for="service">Služba:</label>
-                <input type="text" id="service" name="service" required>
-                <label for="price">Cena:</label>
-                <input type="text" id="price" name="price" required>
-                <button type="submit" id="submitBtn">Přidat položku</button>
-                <button type="button" id="cancelBtn" style="display:none;" onclick="cancelEdit()">Zrušit úpravu</button>
-            </form>
-            <div class="admin-cenik-list">
-                <h3>Aktuální ceník</h3>
-                <table id="adminCenikTable">
-                    <tr>
-                        <th>Služba</th>
-                        <th>Cena</th>
-                        <th>Akce</th>
-                    </tr>
-                    <!-- Položky se načtou z databáze -->
-                </table>
+        <section id="doba" class="section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2><i class="fas fa-clock"></i> Pracovní doba</h2>
+                    <div class="section-line"></div>
+                </div>
+                <div class="doba-grid">
+                    <div class="doba-item">
+                        <div class="day">Pondělí</div>
+                        <div class="time">8:00 – 17:00</div>
+                    </div>
+                    <div class="doba-item">
+                        <div class="day">Úterý</div>
+                        <div class="time">8:00 – 17:00</div>
+                    </div>
+                    <div class="doba-item">
+                        <div class="day">Středa</div>
+                        <div class="time">8:00 – 17:00</div>
+                    </div>
+                    <div class="doba-item">
+                        <div class="day">Čtvrtek</div>
+                        <div class="time">8:00 – 17:00</div>
+                    </div>
+                    <div class="doba-item">
+                        <div class="day">Pátek</div>
+                        <div class="time">8:00 – 15:00</div>
+                    </div>
+                    <div class="doba-item closed">
+                        <div class="day">Víkend</div>
+                        <div class="time">Zavřeno</div>
+                    </div>
+                </div>
             </div>
-            <button onclick="logout()" style="background:#ffeb3b;color:#613636;margin-top:1em;">Odhlásit se</button>
+        </section>
+
+        <section id="objednani" class="section section-alt">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2><i class="fas fa-calendar-plus"></i> Objednání termínu</h2>
+                    <div class="section-line"></div>
+                </div>
+                <div class="form-container">
+                    <form class="booking-form" id="bookingForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name"><i class="fas fa-user"></i> Jméno a příjmení</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone"><i class="fas fa-phone"></i> Telefon</label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email"><i class="fas fa-envelope"></i> E-mail</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="msg"><i class="fas fa-comment"></i> Požadovaný termín a služba</label>
+                            <textarea id="msg" name="msg" required placeholder="Napište nám, kdy byste chtěli přijít a jakou službu preferujete..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                            Odeslat objednávku
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="mapa" class="section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2><i class="fas fa-map-marker-alt"></i> Kde nás najdete</h2>
+                    <div class="section-line"></div>
+                </div>
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps?q=Měnín+475&amp;output=embed" 
+                            width="100%" 
+                            height="400" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy">
+                    </iframe>
+                </div>
+            </div>
         </section>
     </main>
-    <footer>
-        <small>&copy; 2025 Kadeřnictví Tereza Dvořáčková | Vytvořeno s láskou</small>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-info">
+                <h3>Kadeřnictví Tereza Dvořáčková</h3>
+                <p>Profesionální kadeřnické služby v Měníně</p>
+            </div>
+            <div class="footer-contact">
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <a href="tel:792350545">792 350 545</a>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Měnín 475</span>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <small>&copy; 2025 Kadeřnictví Tereza Dvořáčková | Vytvořeno s láskou</small>
+        </div>
     </footer>
 
     <script>
-        // Globální proměnné
-        let isLoggedIn = <?php echo isLoggedIn() ? 'true' : 'false'; ?>;
-        const adminSection = document.getElementById('admin');
-        const adminLoginSection = document.getElementById('admin-login');
-        const loginForm = document.getElementById('loginForm');
-        const loginError = document.getElementById('loginError');
-
         // Načtení ceníku při načtení stránky
         document.addEventListener('DOMContentLoaded', function() {
             loadCenik();
-            if (isLoggedIn) {
-                showAdminPanel();
-            }
+            initSmoothScrolling();
         });
 
         // API volání
@@ -154,134 +227,60 @@
         async function loadCenik() {
             const result = await apiCall('get_cenik');
             if (result.success) {
-                updateCenikTable(result.data);
-                if (isLoggedIn) {
-                    updateAdminCenikTable(result.data);
-                }
+                updateCenikGrid(result.data);
             }
         }
 
-        // Aktualizace veřejného ceníku
-        function updateCenikTable(data) {
-            const table = document.getElementById('cenikTable');
-            // Zachovej header
-            table.innerHTML = '<tr><th>Služba</th><th>Cena</th></tr>';
+        // Aktualizace ceníku - nový grid design
+        function updateCenikGrid(data) {
+            const grid = document.getElementById('cenikGrid');
+            grid.innerHTML = '';
+            
             data.forEach(item => {
-                const row = table.insertRow(-1);
-                row.innerHTML = `<td>${item.sluzba}</td><td>${item.cena}</td>`;
-            });
-        }
-
-        // Aktualizace admin ceníku
-        function updateAdminCenikTable(data) {
-            const table = document.getElementById('adminCenikTable');
-            // Zachovej header
-            table.innerHTML = '<tr><th>Služba</th><th>Cena</th><th>Akce</th></tr>';
-            data.forEach(item => {
-                const row = table.insertRow(-1);
-                row.innerHTML = `
-                    <td>${item.sluzba}</td>
-                    <td>${item.cena}</td>
-                    <td class="admin-cenik-actions">
-                        <button onclick="editItem(${item.id}, '${item.sluzba}', '${item.cena}')">Upravit</button>
-                        <button onclick="deleteItem(${item.id})">Smazat</button>
-                    </td>
+                const cardElement = document.createElement('div');
+                cardElement.className = 'cenik-card';
+                cardElement.innerHTML = `
+                    <div class="cenik-icon">
+                        <i class="fas fa-cut"></i>
+                    </div>
+                    <h3>${escapeHtml(item.sluzba)}</h3>
+                    <div class="cenik-price">${escapeHtml(item.cena)}</div>
                 `;
+                grid.appendChild(cardElement);
             });
         }
 
-        // Přihlášení
-        loginForm.onsubmit = async function(e) {
+        // Smooth scrolling pro navigaci
+        function initSmoothScrolling() {
+            const links = document.querySelectorAll('nav a[href^="#"]');
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Formulář objednávky
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const password = document.getElementById('adminPassword').value;
-            const result = await apiCall('login', { password });
-            
-            if (result.success) {
-                isLoggedIn = true;
-                showAdminPanel();
-                loginError.style.display = 'none';
-                loadCenik();
-            } else {
-                loginError.style.display = 'block';
-                loginError.textContent = result.message;
-            }
-        };
-
-        // Zobrazení admin panelu
-        function showAdminPanel() {
-            adminSection.style.display = 'block';
-            adminLoginSection.style.display = 'none';
-            window.location.hash = '#admin';
-        }
-
-        // Odhlášení
-        async function logout() {
-            await apiCall('logout');
-            isLoggedIn = false;
-            adminSection.style.display = 'none';
-            adminLoginSection.style.display = 'block';
-            loginForm.reset();
-            window.location.hash = '#admin-login';
-        }
-
-        // Přidání/úprava položky
-        document.getElementById('cenikForm').onsubmit = async function(e) {
-            e.preventDefault();
-            const sluzba = document.getElementById('service').value;
-            const cena = document.getElementById('price').value;
-            const editId = document.getElementById('editId').value;
-            
-            if (!sluzba || !cena) return;
-            
-            let result;
-            if (editId) {
-                result = await apiCall('update_item', { id: editId, sluzba, cena });
-            } else {
-                result = await apiCall('add_item', { sluzba, cena });
-            }
-            
-            if (result.success) {
-                document.getElementById('service').value = '';
-                document.getElementById('price').value = '';
-                document.getElementById('editId').value = '';
-                document.getElementById('submitBtn').textContent = 'Přidat položku';
-                document.getElementById('cancelBtn').style.display = 'none';
-                loadCenik();
-            } else {
-                alert(result.message);
-            }
-        };
-
-        // Úprava položky
-        function editItem(id, sluzba, cena) {
-            document.getElementById('editId').value = id;
-            document.getElementById('service').value = sluzba;
-            document.getElementById('price').value = cena;
-            document.getElementById('submitBtn').textContent = 'Upravit položku';
-            document.getElementById('cancelBtn').style.display = 'inline-block';
-            window.scrollTo({top: document.getElementById('admin').offsetTop - 80, behavior: 'smooth'});
-        }
-
-        // Zrušení úpravy
-        function cancelEdit() {
-            document.getElementById('editId').value = '';
-            document.getElementById('service').value = '';
-            document.getElementById('price').value = '';
-            document.getElementById('submitBtn').textContent = 'Přidat položku';
-            document.getElementById('cancelBtn').style.display = 'none';
-        }
-
-        // Smazání položky
-        async function deleteItem(id) {
-            if (confirm('Opravdu chcete smazat tuto položku?')) {
-                const result = await apiCall('delete_item', { id });
-                if (result.success) {
-                    loadCenik();
-                } else {
-                    alert(result.message);
-                }
-            }
-        }
+            // Zde by byla logika pro odeslání formuláře
+            alert('Děkujeme za Vaši objednávku! Brzy se Vám ozveme.');
+        });
     </script>
 </body>
 </html>
