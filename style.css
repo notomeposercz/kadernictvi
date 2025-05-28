@@ -1,0 +1,132 @@
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #fff7f2;
+    color: #3d2c2c;
+}
+header.main-header {
+    position: relative;
+    text-align: center;
+    background: #613636;
+    color: #fff;
+    padding: 0;
+}
+.header-photo {
+    width: 100%;
+    max-height: 320px;
+    object-fit: cover;
+    display: block;
+    opacity: 0.93;
+}
+.header-content {
+    position: absolute;
+    top: 30%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    background: rgba(97, 54, 54, 0.7);
+    padding: 2rem 1rem 1rem 1rem;
+}
+.header-content h1 {
+    margin: 0 0 0.4em 0;
+    font-size: 2.2em;
+}
+nav {
+    background: #f7c7b0;
+    padding: 0.5em 0;
+    text-align: center;
+}
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+nav ul li {
+    display: inline-block;
+    margin: 0 1em;
+}
+nav ul li a {
+    color: #613636;
+    text-decoration: none;
+    font-weight: bold;
+}
+main {
+    max-width: 800px;
+    margin: 2em auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px #ffe5d0;
+    padding: 2em;
+}
+section {
+    margin-bottom: 2em;
+}
+h2 {
+    color: #e6733b;
+    margin-top: 0;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1em 0;
+}
+th, td {
+    padding: 0.6em;
+    border: 1px solid #e1c0b7;
+    text-align: left;
+}
+form label {
+    display: block;
+    margin-top: 1em;
+    font-weight: bold;
+}
+form input, form textarea {
+    width: 100%;
+    padding: 0.5em;
+    margin-top: 0.3em;
+    border: 1px solid #e1c0b7;
+    border-radius: 4px;
+    font-family: inherit;
+}
+form button {
+    margin-top: 1em;
+    background: #e6733b;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.7em 1.5em;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+form button:hover {
+    background: #c45a18;
+}
+.mapouter {
+    width: 100%;
+    height: 250px;
+    margin-top: 1em;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 6px #e1c0b7;
+}
+footer {
+    background: #613636;
+    color: #fff;
+    text-align: center;
+    padding: 1em 0;
+    margin-top: 2em;
+    font-size: 0.95em;
+}
+@media (max-width: 600px) {
+    .header-content h1 {
+        font-size: 1.3em;
+    }
+    main {
+        padding: 1em;
+    }
+    nav ul li {
+        margin: 0 0.3em;
+    }
+}

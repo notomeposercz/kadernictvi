@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kadeřnictví Tereza Dvořáčková</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="main-header">
+        <img src="image1.jpg" alt="Kadeřnictví Tereza Dvořáčková" class="header-photo">
+        <div class="header-content">
+            <h1>Kadeřnictví Tereza Dvořáčková</h1>
+            <p>Měnín 475</p>
+            <p>Tel.: <a href="tel:792350545">792 350 545</a></p>
+            <p>IČ: 04652240</p>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#cenik">Ceník</a></li>
+            <li><a href="#doba">Pracovní doba</a></li>
+            <li><a href="#kontakt">Kontakt</a></li>
+            <li><a href="#mapa">Kde nás najdete</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="o-nas">
+            <h2>O nás</h2>
+            <p>Moderní kadeřnické služby v příjemném prostředí. Sledujeme trendy, pečujeme o každého zákazníka individuálně. Přijďte se nechat hýčkat do našeho salonu v Měníně!</p>
+        </section>
+
+        <section id="cenik">
+            <h2>Ceník</h2>
+            <table>
+                <tr><th>Služba</th><th>Cena</th></tr>
+                <tr><td>Dámský střih</td><td>350 Kč</td></tr>
+                <tr><td>Pánský střih</td><td>250 Kč</td></tr>
+                <tr><td>Dětský střih</td><td>200 Kč</td></tr>
+                <tr><td>Barvení</td><td>od 600 Kč</td></tr>
+                <tr><td>Melír</td><td>od 700 Kč</td></tr>
+            </table>
+        </section>
+
+        <section id="doba">
+            <h2>Pracovní doba</h2>
+            <table>
+                <tr><td>Pondělí</td><td>8:00 – 17:00</td></tr>
+                <tr><td>Úterý</td><td>8:00 – 17:00</td></tr>
+                <tr><td>Středa</td><td>8:00 – 17:00</td></tr>
+                <tr><td>Čtvrtek</td><td>8:00 – 17:00</td></tr>
+                <tr><td>Pátek</td><td>8:00 – 15:00</td></tr>
+                <tr><td>Sobota</td><td>Zavřeno</td></tr>
+                <tr><td>Neděle</td><td>Zavřeno</td></tr>
+            </table>
+        </section>
+
+        <section id="kontakt">
+            <h2>Kontaktní formulář</h2>
+            <form>
+                <label for="name">Jméno:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="msg">Zpráva:</label>
+                <textarea id="msg" name="msg" required></textarea>
+                <button type="submit">Odeslat</button>
+            </form>
+        </section>
+
+        <section id="mapa">
+            <h2>Kde nás najdete</h2>
+            <div class="mapouter">
+                <iframe src="https://www.google.com/maps?q=Měnín+475&amp;output=embed" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <small>&copy; 2025 Kadeřnictví Tereza Dvořáčková | Vytvořeno s láskou</small>
+    </footer>
+</body>
+</html>
