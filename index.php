@@ -1,3 +1,4 @@
+<?php require_once 'config.php'; ?>
 <!DOCTYPE html>
 <html lang="cs">
 <head>
@@ -34,13 +35,9 @@
 
         <section id="cenik" class="card">
             <h2>Ceník</h2>
-            <table>
+            <table id="cenikTable">
                 <tr><th>Služba</th><th>Cena</th></tr>
-                <tr><td>Dámský střih</td><td>350 Kč</td></tr>
-                <tr><td>Pánský střih</td><td>250 Kč</td></tr>
-                <tr><td>Dětský střih</td><td>200 Kč</td></tr>
-                <tr><td>Barvení</td><td>od 600 Kč</td></tr>
-                <tr><td>Melír</td><td>od 700 Kč</td></tr>
+                <!-- Ceník se načte z databáze -->
             </table>
         </section>
 
@@ -90,15 +87,17 @@
             <div id="loginError" style="color:#b34d1e; display:none; margin-top:1em;">Nesprávné heslo!</div>
         </section>
 
-        <!-- Administrace ceníku, skrytá dokud není přihlášeno -->
+        <!-- Administrace ceníku -->
         <section id="admin" class="admin-panel" style="display:none;">
             <h2>Administrace ceníku</h2>
             <form id="cenikForm">
+                <input type="hidden" id="editId" value="">
                 <label for="service">Služba:</label>
                 <input type="text" id="service" name="service" required>
                 <label for="price">Cena:</label>
                 <input type="text" id="price" name="price" required>
-                <button type="submit">Přidat položku</button>
+                <button type="submit" id="submitBtn">Přidat položku</button>
+                <button type="button" id="cancelBtn" style="display:none;" onclick="cancelEdit()">Zrušit úpravu</button>
             </form>
             <div class="admin-cenik-list">
                 <h3>Aktuální ceník</h3>
@@ -108,46 +107,7 @@
                         <th>Cena</th>
                         <th>Akce</th>
                     </tr>
-                    <tr>
-                        <td>Dámský střih</td>
-                        <td>350 Kč</td>
-                        <td class="admin-cenik-actions">
-                            <button onclick="editRow(this)">Upravit</button>
-                            <button onclick="deleteRow(this)">Smazat</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Pánský střih</td>
-                        <td>250 Kč</td>
-                        <td class="admin-cenik-actions">
-                            <button onclick="editRow(this)">Upravit</button>
-                            <button onclick="deleteRow(this)">Smazat</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Dětský střih</td>
-                        <td>200 Kč</td>
-                        <td class="admin-cenik-actions">
-                            <button onclick="editRow(this)">Upravit</button>
-                            <button onclick="deleteRow(this)">Smazat</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Barvení</td>
-                        <td>od 600 Kč</td>
-                        <td class="admin-cenik-actions">
-                            <button onclick="editRow(this)">Upravit</button>
-                            <button onclick="deleteRow(this)">Smazat</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Melír</td>
-                        <td>od 700 Kč</td>
-                        <td class="admin-cenik-actions">
-                            <button onclick="editRow(this)">Upravit</button>
-                            <button onclick="deleteRow(this)">Smazat</button>
-                        </td>
-                    </tr>
+                    <!-- Položky se načtou z databáze -->
                 </table>
             </div>
             <button onclick="logout()" style="background:#ffeb3b;color:#613636;margin-top:1em;">Odhlásit se</button>
@@ -156,60 +116,172 @@
     <footer>
         <small>&copy; 2025 Kadeřnictví Tereza Dvořáčková | Vytvořeno s láskou</small>
     </footer>
+
     <script>
-        // --- ADMIN LOGIN ---
+        // Globální proměnné
+        let isLoggedIn = <?php echo isLoggedIn() ? 'true' : 'false'; ?>;
         const adminSection = document.getElementById('admin');
         const adminLoginSection = document.getElementById('admin-login');
         const loginForm = document.getElementById('loginForm');
         const loginError = document.getElementById('loginError');
-        const ADMIN_PASS = 'kadernice2025'; // změňte si dle potřeby
 
-        loginForm.onsubmit = function(e) {
+        // Načtení ceníku při načtení stránky
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCenik();
+            if (isLoggedIn) {
+                showAdminPanel();
+            }
+        });
+
+        // API volání
+        async function apiCall(action, data = {}) {
+            try {
+                const response = await fetch('api.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ action, ...data })
+                });
+                return await response.json();
+            } catch (error) {
+                console.error('API Error:', error);
+                return { success: false, message: 'Chyba připojení' };
+            }
+        }
+
+        // Načtení ceníku z databáze
+        async function loadCenik() {
+            const result = await apiCall('get_cenik');
+            if (result.success) {
+                updateCenikTable(result.data);
+                if (isLoggedIn) {
+                    updateAdminCenikTable(result.data);
+                }
+            }
+        }
+
+        // Aktualizace veřejného ceníku
+        function updateCenikTable(data) {
+            const table = document.getElementById('cenikTable');
+            // Zachovej header
+            table.innerHTML = '<tr><th>Služba</th><th>Cena</th></tr>';
+            data.forEach(item => {
+                const row = table.insertRow(-1);
+                row.innerHTML = `<td>${item.sluzba}</td><td>${item.cena}</td>`;
+            });
+        }
+
+        // Aktualizace admin ceníku
+        function updateAdminCenikTable(data) {
+            const table = document.getElementById('adminCenikTable');
+            // Zachovej header
+            table.innerHTML = '<tr><th>Služba</th><th>Cena</th><th>Akce</th></tr>';
+            data.forEach(item => {
+                const row = table.insertRow(-1);
+                row.innerHTML = `
+                    <td>${item.sluzba}</td>
+                    <td>${item.cena}</td>
+                    <td class="admin-cenik-actions">
+                        <button onclick="editItem(${item.id}, '${item.sluzba}', '${item.cena}')">Upravit</button>
+                        <button onclick="deleteItem(${item.id})">Smazat</button>
+                    </td>
+                `;
+            });
+        }
+
+        // Přihlášení
+        loginForm.onsubmit = async function(e) {
             e.preventDefault();
-            const pass = document.getElementById('adminPassword').value;
-            if(pass === ADMIN_PASS) {
-                adminSection.style.display = 'block';
-                adminLoginSection.style.display = 'none';
+            const password = document.getElementById('adminPassword').value;
+            const result = await apiCall('login', { password });
+            
+            if (result.success) {
+                isLoggedIn = true;
+                showAdminPanel();
                 loginError.style.display = 'none';
-                window.location.hash = '#admin';
+                loadCenik();
             } else {
                 loginError.style.display = 'block';
+                loginError.textContent = result.message;
             }
         };
 
-        window.logout = function() {
+        // Zobrazení admin panelu
+        function showAdminPanel() {
+            adminSection.style.display = 'block';
+            adminLoginSection.style.display = 'none';
+            window.location.hash = '#admin';
+        }
+
+        // Odhlášení
+        async function logout() {
+            await apiCall('logout');
+            isLoggedIn = false;
             adminSection.style.display = 'none';
             adminLoginSection.style.display = 'block';
             loginForm.reset();
             window.location.hash = '#admin-login';
-        };
+        }
 
-        // --- ADMIN PANEL: Add, edit, delete rows (demo only, no persistence) ---
-        document.getElementById('cenikForm').onsubmit = function(e) {
+        // Přidání/úprava položky
+        document.getElementById('cenikForm').onsubmit = async function(e) {
             e.preventDefault();
-            var service = document.getElementById('service').value;
-            var price = document.getElementById('price').value;
-            if(service && price) {
-                var table = document.getElementById('adminCenikTable');
-                var row = table.insertRow(-1);
-                row.innerHTML = '<td>' + service + '</td><td>' + price + '</td><td class="admin-cenik-actions"><button onclick="editRow(this)">Upravit</button><button onclick="deleteRow(this)">Smazat</button></td>';
+            const sluzba = document.getElementById('service').value;
+            const cena = document.getElementById('price').value;
+            const editId = document.getElementById('editId').value;
+            
+            if (!sluzba || !cena) return;
+            
+            let result;
+            if (editId) {
+                result = await apiCall('update_item', { id: editId, sluzba, cena });
+            } else {
+                result = await apiCall('add_item', { sluzba, cena });
+            }
+            
+            if (result.success) {
                 document.getElementById('service').value = '';
                 document.getElementById('price').value = '';
+                document.getElementById('editId').value = '';
+                document.getElementById('submitBtn').textContent = 'Přidat položku';
+                document.getElementById('cancelBtn').style.display = 'none';
+                loadCenik();
+            } else {
+                alert(result.message);
             }
         };
-        window.deleteRow = function(btn) {
-            var row = btn.parentNode.parentNode;
-            row.parentNode.removeChild(row);
-        };
-        window.editRow = function(btn) {
-            var row = btn.parentNode.parentNode;
-            var service = row.cells[0].innerText;
-            var price = row.cells[1].innerText;
-            document.getElementById('service').value = service;
-            document.getElementById('price').value = price;
-            row.parentNode.removeChild(row);
+
+        // Úprava položky
+        function editItem(id, sluzba, cena) {
+            document.getElementById('editId').value = id;
+            document.getElementById('service').value = sluzba;
+            document.getElementById('price').value = cena;
+            document.getElementById('submitBtn').textContent = 'Upravit položku';
+            document.getElementById('cancelBtn').style.display = 'inline-block';
             window.scrollTo({top: document.getElementById('admin').offsetTop - 80, behavior: 'smooth'});
-        };
+        }
+
+        // Zrušení úpravy
+        function cancelEdit() {
+            document.getElementById('editId').value = '';
+            document.getElementById('service').value = '';
+            document.getElementById('price').value = '';
+            document.getElementById('submitBtn').textContent = 'Přidat položku';
+            document.getElementById('cancelBtn').style.display = 'none';
+        }
+
+        // Smazání položky
+        async function deleteItem(id) {
+            if (confirm('Opravdu chcete smazat tuto položku?')) {
+                const result = await apiCall('delete_item', { id });
+                if (result.success) {
+                    loadCenik();
+                } else {
+                    alert(result.message);
+                }
+            }
+        }
     </script>
 </body>
 </html>
