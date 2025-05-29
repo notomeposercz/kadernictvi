@@ -434,6 +434,112 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             break;
             
+            
+            
+            // Přidej tyto funkce do api.php
+
+// Funkce pro dárkové poukazy
+case 'get_gift_vouchers':
+    try {
+        $stmt = $pdo->prepare("SELECT * FROM gift_vouchers ORDER BY id DESC LIMIT 1");
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($result) {
+            echo json_encode(['success' => true, 'data' => $result]);
+        } else {
+            // Vrátit výchozí data pokud nejsou v databázi
+            $defaultData = [
+                'main_text' => 'Překvapte své blízké stylovou péčí o vlasy! Naše dárkové poukazy jsou ideálním dárkem pro každou příležitost. Darujte radost z profesionálního kadeřnického zážitku v našem salonu.',
+                'contact_text' => 'Zavolejte nám nebo napište SMS na 792 350 545 a my vám připravíme poukaz na míru. Osobní odběr v salonu nebo možnost zaslání poštou.',
+                'phone' => '792 350 545',
+                'active' => 1,
+                'voucher1_name' => 'Kompletní péče',
+                'voucher1_price' => 'od 500 Kč',
+                'voucher1_description' => 'Střih + styling + péče o vlasy',
+                'voucher2_name' => 'Barvení & melír',
+                'voucher2_price' => 'od 800 Kč',
+                'voucher2_description' => 'Profesionální barvení s poradenstvím',
+                'voucher3_name' => 'Libovolná částka',
+                'voucher3_price' => 'dle přání',
+                'voucher3_description' => 'Určete si vlastní hodnotu poukazu'
+            ];
+            echo json_encode(['success' => true, 'data' => $defaultData]);
+        }
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => 'Chyba při načítání dárkových poukazů: ' . $e->getMessage()]);
+    }
+    break;
+
+case 'save_gift_vouchers':
+    try {
+        $mainText = $_POST['main_text'] ?? '';
+        $contactText = $_POST['contact_text'] ?? '';
+        $phone = $_POST['phone'] ?? '792 350 545';
+        $active = isset($_POST['active']) ? (int)$_POST['active'] : 1;
+        
+        $voucher1Name = $_POST['voucher1_name'] ?? 'Kompletní péče';
+        $voucher1Price = $_POST['voucher1_price'] ?? 'od 500 Kč';
+        $voucher1Description = $_POST['voucher1_description'] ?? 'Střih + styling + péče o vlasy';
+        
+        $voucher2Name = $_POST['voucher2_name'] ?? 'Barvení & melír';
+        $voucher2Price = $_POST['voucher2_price'] ?? 'od 800 Kč';
+        $voucher2Description = $_POST['voucher2_description'] ?? 'Profesionální barvení s poradenstvím';
+        
+        $voucher3Name = $_POST['voucher3_name'] ?? 'Libovolná částka';
+        $voucher3Price = $_POST['voucher3_price'] ?? 'dle přání';
+        $voucher3Description = $_POST['voucher3_description'] ?? 'Určete si vlastní hodnotu poukazu';
+        
+        // Zkontroluj, jestli už existuje záznam
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM gift_vouchers");
+        $stmt->execute();
+        $count = $stmt->fetchColumn();
+        
+        if ($count > 0) {
+            // UPDATE existujícího záznamu
+            $stmt = $pdo->prepare("
+                UPDATE gift_vouchers SET 
+                main_text = ?, contact_text = ?, phone = ?, active = ?,
+                voucher1_name = ?, voucher1_price = ?, voucher1_description = ?,
+                voucher2_name = ?, voucher2_price = ?, voucher2_description = ?,
+                voucher3_name = ?, voucher3_price = ?, voucher3_description = ?,
+                updated_at = CURRENT_TIMESTAMP
+                WHERE id = (SELECT id FROM (SELECT id FROM gift_vouchers ORDER BY id DESC LIMIT 1) as temp)
+            ");
+            $stmt->execute([
+                $mainText, $contactText, $phone, $active,
+                $voucher1Name, $voucher1Price, $voucher1Description,
+                $voucher2Name, $voucher2Price, $voucher2Description,
+                $voucher3Name, $voucher3Price, $voucher3Description
+            ]);
+        } else {
+            // INSERT nového záznamu
+            $stmt = $pdo->prepare("
+                INSERT INTO gift_vouchers (
+                    main_text, contact_text, phone, active,
+                    voucher1_name, voucher1_price, voucher1_description,
+                    voucher2_name, voucher2_price, voucher2_description,
+                    voucher3_name, voucher3_price, voucher3_description
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ");
+            $stmt->execute([
+                $mainText, $contactText, $phone, $active,
+                $voucher1Name, $voucher1Price, $voucher1Description,
+                $voucher2Name, $voucher2Price, $voucher2Description,
+                $voucher3Name, $voucher3Price, $voucher3Description
+            ]);
+        }
+        
+        echo json_encode(['success' => true, 'message' => 'Dárkové poukazy byly úspěšně uloženy']);
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => 'Chyba při ukládání dárkových poukazů: ' . $e->getMessage()]);
+    }
+    break;
+            
+            
+            
+            
+            
         case 'update_order':
             if (!isLoggedIn()) {
                 echo json_encode(['success' => false, 'message' => 'Nejste přihlášen']);

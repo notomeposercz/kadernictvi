@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- HTML zůstává stejný... -->
     <header class="main-header">
         <div class="header-overlay"></div>
         <img src="image1.jpg" alt="Kadeřnictví Tereza Dvořáčková" class="header-photo">
@@ -19,6 +18,9 @@
                 <i class="fas fa-cut"></i>
             </div>
             <h1>Kadeřnictví Tereza Dvořáčková</h1>
+            <div class="header-motto">
+                <span>vaše vlasy🌈 moje radost</span>
+            </div>
             <div class="header-info">
                 <div class="info-item">
                     <i class="fas fa-map-marker-alt"></i>
@@ -57,7 +59,7 @@
                 </div>
                 <div class="about-content">
                     <div class="about-text">
-                        <p>Moderní kadeřnické služby v příjemném prostředí. Sledujeme trendy, pečujeme o každého zákazníka individuálně. Přijďte se nechat hýčkat do našeho salonu v Měníně!</p>
+                        <p>Moderní kadeřnické služby v příjemném prostředí. Sledujeme trendy, pečujeme o každého zákazníka individuálně. Přijďte se nechat hýčkat do našeho salonu.</p>
                         <div class="features">
                             <div class="feature">
                                 <i class="fas fa-star"></i>

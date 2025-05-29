@@ -577,6 +577,159 @@ async function saveContactInfo() {
     }
 }
 
+
+
+
+
+// Přidej tyto funkce do admin-script.js
+
+// Funkce pro dárkové poukazy
+async function loadGiftVouchersData() {
+    try {
+        const response = await fetch('../api.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'get_gift_vouchers' })
+        });
+        
+        const result = await response.json();
+        if (result.success && result.data) {
+            const data = result.data;
+            
+            // Naplnění formuláře
+            document.getElementById('giftMainText').value = data.main_text || '';
+            document.getElementById('giftContactText').value = data.contact_text || '';
+            document.getElementById('giftPhone').value = data.phone || '792 350 545';
+            document.getElementById('giftActive').value = data.active || 1;
+            
+            // Naplnění voucher typů
+            document.getElementById('voucher1Name').value = data.voucher1_name || '';
+            document.getElementById('voucher1Price').value = data.voucher1_price || '';
+            document.getElementById('voucher1Description').value = data.voucher1_description || '';
+            
+            document.getElementById('voucher2Name').value = data.voucher2_name || '';
+            document.getElementById('voucher2Price').value = data.voucher2_price || '';
+            document.getElementById('voucher2Description').value = data.voucher2_description || '';
+            
+            document.getElementById('voucher3Name').value = data.voucher3_name || '';
+            document.getElementById('voucher3Price').value = data.voucher3_price || '';
+            document.getElementById('voucher3Description').value = data.voucher3_description || '';
+        }
+    } catch (error) {
+        console.error('Chyba při načítání dat dárkových poukazů:', error);
+    }
+}
+
+async function saveGiftVouchers() {
+    try {
+        const formData = new FormData();
+        formData.append('action', 'save_gift_vouchers');
+        formData.append('main_text', document.getElementById('giftMainText').value);
+        formData.append('contact_text', document.getElementById('giftContactText').value);
+        formData.append('phone', document.getElementById('giftPhone').value);
+        formData.append('active', document.getElementById('giftActive').value);
+        
+        formData.append('voucher1_name', document.getElementById('voucher1Name').value);
+        formData.append('voucher1_price', document.getElementById('voucher1Price').value);
+        formData.append('voucher1_description', document.getElementById('voucher1Description').value);
+        
+        formData.append('voucher2_name', document.getElementById('voucher2Name').value);
+        formData.append('voucher2_price', document.getElementById('voucher2Price').value);
+        formData.append('voucher2_description', document.getElementById('voucher2Description').value);
+        
+        formData.append('voucher3_name', document.getElementById('voucher3Name').value);
+        formData.append('voucher3_price', document.getElementById('voucher3Price').value);
+        formData.append('voucher3_description', document.getElementById('voucher3Description').value);
+        
+        const response = await fetch('../api.php', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const result = await response.json();
+        if (result.success) {
+            showToast('Dárkové poukazy byly úspěšně uloženy', 'success');
+        } else {
+            showToast(result.message, 'error');
+        }
+    } catch (error) {
+        showToast('Chyba při ukládání dárkových poukazů', 'error');
+        console.error('Chyba:', error);
+    }
+}
+
+// Rozšíření funkce showSection pro dárkové poukazy
+function showSection(sectionName) {
+    // Skryj všechny sekce
+    document.querySelectorAll('.admin-section').forEach(section => {
+        section.style.display = 'none';
+    });
+    
+    // Odstraň aktivní třídu ze všech nav-item
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    
+    // Zobraz vybranou sekci
+    const targetSection = document.getElementById(sectionName + '-section');
+    if (targetSection) {
+        targetSection.style.display = 'block';
+    }
+    
+    // Přidej aktivní třídu k odpovídajícímu menu
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+        const itemContent = item.querySelector('.nav-item-name');
+        if (itemContent) {
+            const itemText = itemContent.textContent.toLowerCase();
+            if ((sectionName === 'o-nas' && itemText.includes('o nás')) ||
+                (sectionName === 'cenik' && itemText.includes('ceník')) ||
+                (sectionName === 'pracovni-doba' && itemText.includes('pracovní doba')) ||
+                (sectionName === 'objednani' && itemText.includes('objednání')) ||
+                (sectionName === 'poukazy' && itemText.includes('dárkové poukazy')) ||
+                (sectionName === 'kontakt' && itemText.includes('kde nás najdete'))) {
+                item.classList.add('active');
+            }
+        }
+    });
+    
+    // Načti data pro odpovídající sekci
+    switch (sectionName) {
+        case 'cenik':
+            loadCenikData();
+            break;
+        case 'pracovni-doba':
+            loadHoursData();
+            break;
+        case 'o-nas':
+            loadAboutData();
+            break;
+        case 'objednani':
+            loadBookingData();
+            break;
+        case 'poukazy':
+            loadGiftVouchersData();
+            break;
+        case 'kontakt':
+            loadContactData();
+            break;
+    }
+}
+
+// Ujisti se, že se funkce zavolá při načtení stránky
+document.addEventListener('DOMContentLoaded', function() {
+    // Další inicializační kód...
+    
+    // Pokud je aktivní sekce poukazy, načti data
+    const activeSection = document.querySelector('.nav-item.active .nav-item-name');
+    if (activeSection && activeSection.textContent.includes('Dárkové poukazy')) {
+        loadGiftVouchersData();
+    }
+});
+
+
+
+
 // === PŮVODNÍ FUNKCE PRO CENÍK ===
 
 // Načtení ceníku

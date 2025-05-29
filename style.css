@@ -114,9 +114,62 @@ html {
 .header-content h1 {
     font-size: clamp(2.5rem, 5vw, 4rem);
     font-weight: 800;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     letter-spacing: -0.02em;
+}
+
+/* === MOTTO === */
+.header-motto {
+    margin-bottom: 2rem;
+    animation: mottoGlow 3s ease-in-out infinite alternate;
+}
+
+.header-motto span {
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    font-weight: 600;
+    font-style: italic;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    display: inline-block;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Speciální efekt pro duhu */
+.header-motto span::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.2), 
+        transparent);
+    transition: var(--transition-slow);
+}
+
+.header-motto:hover span::before {
+    left: 100%;
+}
+
+@keyframes mottoGlow {
+    0% {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        transform: scale(1);
+    }
+    100% {
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 
+                   0 0 30px rgba(245, 158, 11, 0.3);
+        transform: scale(1.02);
+    }
 }
 
 .header-info {
@@ -629,6 +682,11 @@ html {
         gap: 1rem;
     }
     
+    .header-motto span {
+        padding: 0.5rem 1rem;
+        font-size: 1.1rem;
+    }
+    
     .form-row {
         grid-template-columns: 1fr;
     }
@@ -671,6 +729,10 @@ html {
     .footer-content {
         text-align: center;
     }
+    
+    .header-content {
+        padding: 1rem;
+    }
 }
 
 /* === ANIMACE === */
@@ -704,4 +766,352 @@ html {
     .cenik-card:nth-child(3) { animation-delay: 0.3s; }
     .cenik-card:nth-child(4) { animation-delay: 0.4s; }
     .cenik-card:nth-child(5) { animation-delay: 0.5s; }
+}
+
+/* Přidej toto na konec souboru style.css */
+
+/* === DÁRKOVÉ POUKAZY === */
+.gift-vouchers-content {
+    text-align: center;
+}
+
+.gift-intro p {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin-bottom: 4rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.gift-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.gift-feature {
+    background: var(--surface);
+    border-radius: var(--rounded-lg);
+    padding: 2.5rem 2rem;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    border: 2px solid transparent;
+}
+
+.gift-feature:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-light);
+}
+
+.gift-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 1.5rem;
+    background: linear-gradient(135deg, var(--accent), var(--secondary));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.gift-feature:hover .gift-icon {
+    transform: scale(1.1) rotate(10deg);
+}
+
+.gift-icon i {
+    font-size: 1.8rem;
+    color: white;
+}
+
+.gift-feature h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.gift-feature p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.gift-types {
+    margin-bottom: 4rem;
+}
+
+.gift-types h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2rem;
+}
+
+.voucher-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.voucher-card {
+    background: var(--surface);
+    border-radius: var(--rounded-lg);
+    padding: 2.5rem 2rem;
+    box-shadow: var(--shadow);
+    border: 2px solid transparent;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.voucher-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--secondary));
+}
+
+.voucher-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--accent);
+}
+
+.voucher-ribbon {
+    position: absolute;
+    top: 1rem;
+    right: -2rem;
+    background: linear-gradient(135deg, var(--accent), var(--secondary));
+    color: white;
+    padding: 0.5rem 3rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transform: rotate(45deg);
+    box-shadow: var(--shadow);
+}
+
+.voucher-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    background: linear-gradient(135deg, var(--accent), var(--secondary));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.voucher-card:hover .voucher-icon {
+    transform: scale(1.1) rotate(-10deg);
+}
+
+.voucher-icon i {
+    font-size: 2rem;
+    color: white;
+}
+
+.voucher-card h4 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.voucher-price {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--accent);
+    background: rgba(245, 158, 11, 0.1);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--rounded);
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.voucher-card p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* === KONTAKT PRO POUKAZY === */
+.gift-contact {
+    margin-top: 3rem;
+}
+
+.gift-cta {
+    background: linear-gradient(135deg, var(--accent), var(--secondary));
+    color: white;
+    border-radius: var(--rounded-xl);
+    padding: 3rem 2rem;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.gift-cta::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    animation: giftShine 4s ease-in-out infinite;
+}
+
+@keyframes giftShine {
+    0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+    50% { transform: translate(-30%, -30%) rotate(180deg); }
+}
+
+.gift-cta h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 2;
+}
+
+.gift-cta p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    opacity: 0.95;
+    position: relative;
+    z-index: 2;
+}
+
+.gift-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+}
+
+.gift-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: var(--rounded);
+    text-decoration: none;
+    font-weight: 600;
+    transition: var(--transition);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.gift-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary.gift-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary.gift-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* === ADMIN STYLY PRO POUKAZY === */
+.voucher-types-editor {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.voucher-types-editor .feature-item {
+    background: #f7fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.voucher-types-editor .feature-item:hover {
+    border-color: #f59e0b;
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.1);
+}
+
+/* === RESPONSIVE PRO DÁRKOVÉ POUKAZY === */
+@media (max-width: 768px) {
+    .gift-features {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .voucher-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .gift-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .gift-btn {
+        width: 100%;
+        max-width: 250px;
+        justify-content: center;
+    }
+    
+    .gift-cta {
+        padding: 2rem 1.5rem;
+    }
+    
+    .gift-intro p {
+        margin-bottom: 3rem;
+    }
+    
+    .gift-features {
+        margin-bottom: 3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .voucher-card {
+        padding: 2rem 1.5rem;
+    }
+    
+    .gift-feature {
+        padding: 2rem 1.5rem;
+    }
+    
+    .voucher-ribbon {
+        font-size: 0.75rem;
+        padding: 0.4rem 2.5rem;
+    }
+    
+    .gift-cta {
+        padding: 1.5rem 1rem;
+    }
+    
+    .gift-cta h3 {
+        font-size: 1.5rem;
+    }
+    
+    .voucher-icon {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .voucher-icon i {
+        font-size: 1.5rem;
+    }
 }
